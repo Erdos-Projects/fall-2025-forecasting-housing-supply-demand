@@ -1,0 +1,65 @@
+Data source:
+
+1.
+
+Canada Mortgage and Housing Corporation, housing starts, all areas, Canada and provinces, seasonally adjusted at annual rates, monthly (x 1,000) 1 2 3
+Frequency: Monthly
+Table: 34-10-0158-01 (formerly CANSIM 027-0054)
+Release date: 2025-09-17
+Geography: Canada, Geographical region of Canada, Province or territory
+
+Footnotes:	
+1	Geographical areas modified every 5 years to reflect most recent census definitions, therefore, data are not strictly comparable historically.
+2	These data are obtained from Canada Mortgage and Housing Corporation (CMHC) and are provided subject to <a href=https://www.cmhc-schl.gc.ca/about-us/terms-conditions/hmip-terms-conditions" rel="external noopener noreferrer" target="_blank">CMHC Licence Agreement for the Use of Data (opens new window)</a>."
+3	For additional information and definitions, refer to <a href=https://www.cmhc-schl.gc.ca/professionals/housing-markets-data-and-research/housing-research/surveys/methods/methodology-rental-market-survey" rel="external noopener noreferrer" target="_blank">CMHC Rental Market Survey Methodology and Definitions (opens new window)</a>."
+
+How to cite: Statistics Canada. Table 34-10-0158-01  Canada Mortgage and Housing Corporation, housing starts, all areas, Canada and provinces, seasonally adjusted at annual rates, monthly (x 1,000)
+https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3410015801
+
+We analyze CMHC housing starts for Canadian provinces, 1990–2025. 
+Since provinces have fixed boundaries, the geographical redefinitions noted in CMHC footnotes apply only to CMAs and do not affect the comparability of our dataset.
+
+2.
+
+"Population estimates, quarterly 1 2 3 4"
+"Frequency: Quarterly"
+"Table: 17-10-0009-01 (formerly CANSIM 051-0005)"
+"Release date: 2025-09-24"
+"Geography: Canada, Province or territory"
+
+Symbol legend:
+.., not available for a specific reference period
+
+Footnotes:
+1,"Postcensal estimates are based on the 2021 Census counts adjusted for census net undercoverage (CNU) (including adjustment for incompletely enumerated reserves and settlements (IERS)) and the components of demographic growth that occurred since that census. Intercensal estimates are produced using counts from two consecutive censuses adjusted for CNU (including IERS) and postcensal estimates."
+2,"Population estimates: Q1 = January 1; Q2 = April 1; Q3 = July 1; Q4 = October 1."
+3,"Estimates are final intercensal and unadjusted for census net undercoverage prior to July 1, 1971. Estimates are final intercensal from July 1, 1971 to April 1, 2021, final postcensal from July 1, 2021 to January 1, 2022, updated postcensal from April 1, 2022 to April 1, 2025 and preliminary postcensal from July 1, 2025."
+4,"The population growth, which is used to calculate population estimates, is comprised of natural increase (Table 17100059), international migration (Table 17100040) and interprovincial migration (Tables 17100020 and 17100045)."
+5,"Prior to July 1, 1991, only population estimates for Northwest Territories and Nunavut combined are available."
+
+"How to cite: Statistics Canada. Table 17-10-0009-01  Population estimates, quarterly"
+https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000901
+
+3.
+
+"Estimates of the number of private households by size on July 1st 1 2 3 4"
+"Frequency: Annual"
+"Table: 17-10-0159-01"
+"Release date: 2024-11-28"
+"Geography: Canada, Province or territory"
+
+Symbol legend:
+.., not available for a specific reference period
+
+Footnotes:
+1,"A private household refers to a person or group of persons who occupy the same private dwelling and do not have a usual place of residence elsewhere in Canada or abroad. The household may consist of a family group such as a census family, of two or more families sharing a dwelling, of a group of unrelated persons or of a person living alone."
+2,"The estimates are final intercensal from 2006 to 2020, final postcensal for 2021, updated postcensal for 2022 and preliminary postcensal for 2023 and 2024."
+3,"The estimates of the number of households are derived from tax data from the T1 Family File (T1FF), census data, census net undercoverage data from coverage studies and population estimates. For postcensal estimates, data from the census and the coverage studies are derived using 2021 data, while 2006, 2011, 2016 and 2021 data are used for the intercensal estimates."
+4,"For further information on the method, see publication "Population and Family Estimation Methods at Statistics Canada", Catalogue no. 91-528-X."
+5,"The estimates on the number of private households of a size of 3 persons, 4 persons, 5 persons and 6 or more persons are available starting in 2016."
+
+"How to cite: Statistics Canada. Table 17-10-0159-01  Estimates of the number of private households by size on July 1st"
+https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710015901
+
+
+For no. of people of age >15 years.
