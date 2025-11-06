@@ -14,10 +14,10 @@ Two key outcomes are modeled:
 
 1. **Housing Starts** — derived from CMHC monthly SAAR (Seasonally Adjusted Annual Rate) data.  
 2. **Housing Adequacy Index (HAI)** — a ratio of housing supply to required housing units, defined as  
-   \[
-   HAI_t = \frac{\text{Housing Starts}_t}{\Delta \text{Population}_t / 2.5}
-   \]
-   where 2.5 represents the assumed average household size (AHS).
+   
+   $\text{HAI}_t = \frac{\text{Housing Starts}_t}{\Delta \text{Population}_t / 2.5}$
+   
+    where 2.5 represents the assumed average household size (AHS).
 
 ---
 
