@@ -111,7 +111,7 @@ Across both holdout and rolling evaluations:
 
 ---
 
-## Summary of Model Performance
+## Summary of Performance of Linear Regression
 ![Summary of Model Performance](data/summary_plot.png)
 
 ---
