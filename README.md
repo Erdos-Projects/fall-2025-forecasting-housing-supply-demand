@@ -111,6 +111,11 @@ Across both holdout and rolling evaluations:
 
 ---
 
+## Summary of Model Performance
+![Summary of Model Performance](data/summary_plot.png)
+
+---
+
 ## Key Insights
 
 - Population growth is the primary driver of long-term housing demand.  
