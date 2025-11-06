@@ -1,123 +1,135 @@
-# Forecasting Canadian Housing Supply and Demand — Fall 2025
+# Are We Building Enough? Forecasting Canadian Housing Starts and Housing Adequacy
 
-This repository develops a data-driven framework to forecast Canadian housing adequacy at the provincial level using open data from CMHC and Statistics Canada, covering the years 1990–2025.  
-The work is part of the Erdős Institute Fall 2025 Data Science Bootcamp.
+This repository develops a reproducible, province-level framework for forecasting housing supply in Canada using open CMHC and Statistics Canada data (1990–2025).  
+The work was conducted as part of the Erdős Institute Data Science Bootcamp (Fall 2025).
 
 ---
 
 ## Project Overview
 
-The project aims to model and forecast two related outcomes:
+The goal of this project is to forecast **quarterly housing starts** and evaluate **housing adequacy** by comparing new construction activity with population-driven housing needs.  
+By integrating demographic data and simple time series models, we aim to assess whether Canada is building enough homes to keep pace with population growth.
 
-1. **Quarterly housing starts** (number of new dwellings started per quarter), derived from CMHC’s monthly *Seasonally Adjusted Annual Rate* (SAAR) data.  
-2. **Housing Adequacy Index (HAI)**, defined as the ratio between housing supply and estimated housing need.
+Two key outcomes are modeled:
 
-The Housing Adequacy Index (HAI) is computed as:
-
-\[
-HAI = \frac{\text{dwellings started in a quarter}}{\Delta \text{population} / \text{AHS}}
-\]
-
-where **AHS** (Average Household Size) is assumed to be 2.5 persons per household.  
-Values of HAI below 1 indicate insufficient supply, while values above 1 suggest a housing surplus relative to population growth.
+1. **Housing Starts** — derived from CMHC monthly SAAR (Seasonally Adjusted Annual Rate) data.  
+2. **Housing Adequacy Index (HAI)** — a ratio of housing supply to required housing units, defined as  
+   \[
+   HAI_t = \frac{\text{Housing Starts}_t}{\Delta \text{Population}_t / 2.5}
+   \]
+   where 2.5 represents the assumed average household size (AHS).
 
 ---
 
 ## Repository Structure
 
-| File or Folder | Description |
-|-----------------|-------------|
-| `data/` | Contains all datasets, including the processed `housing_adequacy_dataset.csv` file. |
-| `utilities/` | Helper functions for feature construction, tuning, and rolling evaluation. |
-| `00_data_processing.ipynb` | Converts CMHC monthly SAAR data to quarterly starts, merges with population, and computes HAI. |
-| `01_eda.ipynb` | Exploratory data analysis of housing starts, population trends, and HAI variation. |
-| `02_dwelling_sameQ.ipynb` | Forecasts housing starts for the same quarter next year (H = 4). |
-| `03_dwelling_nextQ.ipynb` | Forecasts housing starts for the next quarter (H = 1). |
-| `04_explore_hai.ipynb` | Forecasts the Housing Adequacy Index (HAI), comparing raw and smoothed versions. |
-| `plotly_map.ipynb` | Generates interactive provincial heatmaps of model metrics and HAI values. |
-| `best_params_cache_*.json` | Cached hyperparameters for reproducibility and faster reruns. |
+| Folder / File | Description |
+|----------------|-------------|
+| `data/` | Contains the processed datasets, including `housing_adequacy_dataset.csv`. |
+| `utilities/` | Python modules with helper functions for feature creation, tuning, and evaluation. |
+| `Executive_Summary/` | Contains the LaTeX executive summary for the project report. |
+| `00_data_processing.ipynb` | Converts CMHC monthly SAAR data to quarterly, merges with population data, and computes the HAI. |
+| `01_eda.ipynb` | Exploratory data analysis of housing starts, population growth, and adequacy trends. |
+| `02_dwelling_sameQ.ipynb` | Forecasts housing starts one year ahead (t+4). |
+| `03_dwelling_nextQ.ipynb` | Forecasts housing starts one quarter ahead (t+1). |
+| `04_explore_hai.ipynb` | Forecasts Housing Adequacy Index (HAI) using both raw and smoothed versions. |
+| `plotly_map.ipynb` | Generates interactive heatmaps of model results and adequacy indicators across provinces. |
+| `best_params_cache_*.json` | Cached hyperparameters for tuned models to ensure reproducibility. |
 
 ---
 
-## Methodology
+## Data and Feature Design
 
-### 1. Data Preparation
-- Convert monthly CMHC *SAAR* data into quarterly means.  
-- Merge with Statistics Canada population data.  
-- Compute quarterly population change (Δpop) and estimate required dwellings as Δpop / 2.5.  
-- Derive quarterly housing starts as SAAR / 4 × 1000.
+We combine housing starts and population data at the provincial level to build quarterly time series from 1990–2025.  
+Key variables include:
 
-### 2. Forecast Targets
-- `dwelling_starts`: the number of dwellings started each quarter.  
-- `hai`: the Housing Adequacy Index, representing housing supply relative to need.
+- **Housing Starts (SAAR)** — seasonally adjusted annual rates from CMHC.  
+- **Population** — quarterly population from Statistics Canada.  
+- **Population Change** — difference in population between consecutive quarters.  
+- **Needed Units** — estimated housing demand (Δpopulation / 2.5).  
+- **HAI** — ratio of actual starts to needed units.  
 
-### 3. Forecast Horizons
-- **H = 1** → predict the next quarter.  
-- **H = 4** → predict the same quarter in the next year.
-
-### 4. Models Evaluated
-- Linear Regression  
-- Ridge Regression  
-- Random Forest  
-- Extra Trees Regressor  
-- Gradient Boosting  
-- XGBoost  
-
-Model performance is compared against a **seasonal naïve baseline** using the MASE metric.
-
-### 5. Evaluation Metrics
-- Mean Absolute Error (MAE)  
-- Root Mean Squared Error (RMSE)  
-- Symmetric Mean Absolute Percentage Error (sMAPE)  
-- Mean Absolute Scaled Error (MASE)
-
-Rolling evaluation is used to track model stability over time and detect performance drift.
-
-### 6. Smoothing Experiments
-HAI is volatile because of small denominators or rapid supply changes.  
-The project compares raw and smoothed forecasts, using a four-quarter median smoother applied to both features and targets.
+Lag features (1- and 4-quarter) are included to capture persistence and seasonality.
 
 ---
 
-## Key Findings
+## Forecast Setup
 
-- Models generally reproduce short-term dynamics but only slightly outperform the seasonal naïve baseline at longer horizons.  
-- Median smoothing stabilizes forecasts and reduces extreme spikes in HAI but slightly delays turning points.  
-- Population growth explains most of the variation in housing adequacy across provinces.  
-- Ontario and British Columbia show persistent undersupply compared to smaller provinces.  
-- Rolling evaluation indicates model stability improves after 2012 as more data become available.
+We evaluate two forecast horizons:
+
+1. **Next Quarter (t+1)** — short-term forecasting.  
+2. **Same Quarter Next Year (t+4)** — seasonal, one-year-ahead forecasting.
+
+Validation is done using two complementary approaches:
+
+- **Holdout Split:** Training up to 2018 and testing on 2019–2025.  
+- **Rolling Evaluation:** Retraining each quarter to simulate real-time forecasting performance.
 
 ---
 
-## How to Run
+## Models Used
 
-1. Clone the repository.  
-2. Ensure Python 3.10 or higher and install required libraries (`pandas`, `scikit-learn`, `xgboost`, `seaborn`, `plotly`).  
-3. Run the notebooks in sequence:  
+We tested a range of models representing both linear and nonlinear methods, as well as a seasonal benchmark:
 
-   ```
-   00_data_processing.ipynb  
-   01_eda.ipynb  
-   02_dwelling_sameQ.ipynb or 03_dwelling_nextQ.ipynb  
-   04_explore_hai.ipynb
-   ```
+| Model | Description |
+|--------|-------------|
+| **Naïve (Seasonal)** | Baseline model using last year’s same-quarter value. |
+| **Linear Regression (LR)** | Captures direct linear relationships between housing starts and demographic factors. |
+| **Ridge Regression** | Handles correlated lag features by imposing L2 regularization. |
+| **Random Forest (RF)** | Ensemble model capturing nonlinear dependencies and interactions. |
+| **Extra Trees Regressor (ETR)** | Ensemble variant using random splits to reduce variance. |
+| **XGBoost (XGB)** | Gradient-boosted trees providing flexible nonlinear fits and efficient training. |
 
-4. Cached best parameters are automatically loaded from `best_params_cache_*.json`.  
-   Delete or rename these files to force a fresh tuning run.
+All models were **hyperparameter-tuned** using randomized search with cross-validation.  
+Each province was modeled separately to reflect differences in population scale, housing cycles, and volatility.
+
+---
+
+## Evaluation Metrics
+
+Performance was assessed using the following metrics:
+
+- **MAE** — Mean Absolute Error  
+- **RMSE** — Root Mean Squared Error  
+- **sMAPE** — Symmetric Mean Absolute Percentage Error  
+- **MASE** — Mean Absolute Scaled Error (primary metric for baseline comparison)
+
+Models were compared against the seasonal naïve baseline (MASE = 1).  
+Values below 1 indicate improvement over the baseline.
+
+---
+
+## Results Summary
+
+Across both holdout and rolling evaluations:
+
+- **Linear Regression** consistently performed best overall, with MASE values often below one.  
+- At short horizons (t+1), the naïve baseline was hard to beat; Linear and Ridge came closest, with small improvements in some provinces (e.g., NL, MB).  
+- At longer horizons (t+4), several models occasionally outperformed the naïve baseline by capturing the annual seasonal pattern.  
+- Rolling retraining helped stabilize results over time, particularly in smaller provinces with more volatile data.  
+- Overall, the seasonal naïve model remains a strong benchmark, while machine learning models provided modest but interpretable gains.
+
+---
+
+## Key Insights
+
+- Population growth is the primary driver of long-term housing demand.  
+- Housing starts respond to demographic shifts but lag behind during sharp upswings or policy shocks.  
+- Simpler models often generalize better, especially with limited historical data per province.  
+- Forecasting adequacy (HAI) remains challenging due to the compounding effects of small denominators and volatile starts data.  
 
 ---
 
 ## Next Steps
 
-- Add macroeconomic predictors such as interest rates, CPI, and building permits.  
-- Explore multi-level (hierarchical) or panel models for cross-province transfer learning.  
-- Build a reproducible pipeline with automatic rolling evaluation and dashboards for policy insights.
+- Incorporate higher-frequency macroeconomic indicators (permits, employment, interest rates, CPI).  
+- Explore hierarchical or panel-based models for cross-province learning.  
+- Extend the HAI framework to project future housing adequacy using Statistics Canada’s population forecasts.  
+- Develop probabilistic forecasts to communicate uncertainty in future housing supply.
 
 ---
 
 ## Acknowledgments
 
-This project was developed by participants of the **Erdős Institute Fall 2025 Data Science Bootcamp** as part of the *Forecasting Housing Supply and Demand* challenge.  
-We thank the Erdős Institute for guidance and mentorship, and the teaching team for providing data access and modeling support.
-
-Contributors include researchers and data scientists from multiple backgrounds, collaborating to develop transparent, reproducible forecasting tools for housing policy analysis.
+This project was developed by **Anwesha Basu** and **Debanjan Sarkar** as part of the *Erdős Institute Fall 2025 Data Science Bootcamp*.  
+We thank the instructors and mentors of the bootcamp for their guidance and the Erdős community for fostering an environment of collaboration and exploration.
