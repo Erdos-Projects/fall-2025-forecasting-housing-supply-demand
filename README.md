@@ -43,7 +43,7 @@ Two key outcomes are modeled:
 We combine housing starts and population data at the provincial level to build quarterly time series from 1990–2025.  
 Key variables include:
 
-- **Housing Starts (SAAR)** — seasonally adjusted annual rates from CMHC.  
+- **Housing Starts (SAAR)** — monthly seasonally adjusted annual rates from CMHC, converted to quarterly.  
 - **Population** — quarterly population from Statistics Canada.  
 - **Population Change** — difference in population between consecutive quarters.  
 - **Needed Units** — estimated housing demand (Δpopulation / 2.5).  
@@ -73,7 +73,7 @@ We tested a range of models representing both linear and nonlinear methods, as w
 
 | Model | Description |
 |--------|-------------|
-| **Naïve (Seasonal)** | Baseline model using last year’s same-quarter value. |
+| **Naïve (Seasonal)** | Baseline model using last year’s same-quarter value(for t+4)/previous quarter's value(for t+1). |
 | **Linear Regression (LR)** | Captures direct linear relationships between housing starts and demographic factors. |
 | **Ridge Regression** | Handles correlated lag features by imposing L2 regularization. |
 | **Random Forest (RF)** | Ensemble model capturing nonlinear dependencies and interactions. |
@@ -92,7 +92,7 @@ Performance was assessed using the following metrics:
 - **MAE** — Mean Absolute Error  
 - **RMSE** — Root Mean Squared Error  
 - **sMAPE** — Symmetric Mean Absolute Percentage Error  
-- **MASE** — Mean Absolute Scaled Error (primary metric for baseline comparison)
+- **MASE** — Mean Absolute Scaled Error (primary metric for model evaluation with baseline)
 
 Models were compared against the seasonal naïve baseline (MASE = 1).  
 Values below 1 indicate improvement over the baseline.
