@@ -55,7 +55,7 @@ We compared this baseline with several regression and ensemble models using stan
 We trained and compared six models representing a mix of linear and nonlinear approaches:
 
 \begin{itemize}
-    \item \textbf{Seasonal Naïve Model}, as a benchmark based on last year’s same-quarter value.
+    \item \textbf{Seasonal Naïve Model}, as a benchmark based on last year’s same-quarter value(for t+4)/ previous quarter's value(for t+1).
     \item \textbf{Linear Regression (LR)}, to capture direct relationships between housing starts and demographic variables.
     \item \textbf{Ridge Regression}, to stabilize coefficients in the presence of correlated lag features.
     \item \textbf{Random Forest (RF)}, to capture nonlinear patterns and interactions.
